@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <conio.h>
+#include <string.h>
 void insert();
 void display();
 void update();
@@ -12,7 +13,7 @@ struct candidate
 	char fname[20];  //Guadian name
 	char dob[20];    //Date of birth
 	char g;         //Gender
-	int en;          //Enrollment number
+	long en;          //Enrollment number
  } ;
 struct candidate c; 
 
@@ -56,7 +57,7 @@ int main() {
 }
 void insert(){
 	FILE *fp;
-	fp=fopen("new.txt","ab+");
+	fp=fopen("new.txt","a+");
 	if(fp==NULL){
 		printf("File does not exist\n");
 		return ;
@@ -70,8 +71,8 @@ void insert(){
 	gets(c.dob);
 	printf("Enter the Gender:\n");
 	scanf("%c",&c.g);
-	printf("Enter the enrollment number Generated:\n");
-	scanf("%d",&c.en);
+	printf("Enter the enrollment number :\n");
+	scanf("%ld",&c.en);
 	printf("\n\n");
 	fwrite(&c,sizeof(c),1,fp);
 	{   printf("        ____________________________\n");
@@ -85,7 +86,7 @@ void insert(){
 }
 void display(){
 	FILE *fp;
-	fp=fopen("new.txt","rb");
+	fp=fopen("new.txt","r");
 	
 	if(fp==NULL){
 		printf("File does not exist\n");
@@ -99,7 +100,7 @@ void display(){
 	printf("|Number \tCandidate\t  Name    \t       \t Birth   |\n");
 	printf("|________________________________________________________________|\n");
 	while(fread(&c,sizeof(c),1,fp)==1){
-		printf(" %d                %s           %s            %c     %s\n",c.en,c.name,c.fname,c.g,c.dob);
+		printf(" %ld                %s           %s            %c     %s\n",c.en,c.name,c.fname,c.g,c.dob);
 	}
 	
 	fclose(fp);	
@@ -108,12 +109,12 @@ void display(){
 void update(){
 	  int num,flag=0;
 	FILE *fp;
-	fp=fopen("new.txt","rb+");
+	fp=fopen("new.txt","r+");
 	 if(fp==NULL){
 		printf("File does not exist\n");
 		return ;
 	}
-	printf("Enter the last two numbers of Aadhar Whose Record who want update\n");
+	printf("Enter the Enrollment number of Aadhar Whose Record who want update\n");
 	scanf("%d",&num);
 	printf("Previously Stored of given name\n");
 	while(fread(&c,sizeof(c),1,fp)>0 && flag==0)
@@ -122,7 +123,7 @@ void update(){
 			flag=1;
 			printf(" Enrollment \t Name of \tGuardian \tGender \t Date of\n");
 	printf(" Number \tCandidate\t  Name    \t       \t Birth  \n");
-		         	printf(" %d                %s           %s            %c     %s\n",c.en,c.name,c.fname,c.g,c.dob);
+		         	printf(" %ld                %s           %s            %c     %s\n",c.en,c.name,c.fname,c.g,c.dob);
 		    printf("Now Enter the New Record \n");
 		    
 		    fflush(stdin);
@@ -146,15 +147,15 @@ void del(){
 	char name[40];
 	unsigned flag=0;
 	FILE *fp,*ft;
-	fp=fopen("new.txt","ab+");
+	fp=fopen("new.txt","a+");
 	if(fp==NULL){
 		printf("Error:Cannot Open the File!!!\n");
 		return ;
 	}
 	display();
 	printf("Enter the enrollment number  you want to delete\n");
-	scanf("%d",&c.en);
-	ft=fopen("new.txt","ab+");
+	scanf("%ld",&c.en);
+	ft=fopen("new.txt","a+");
 	while(fread(&c,sizeof(c),1,fp)==1){
 		if(strcmp(name,c.name)!=0)
 		{
